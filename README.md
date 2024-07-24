@@ -1,10 +1,6 @@
-[![Build Status](https://travis-ci.org/kaimallea/isMobile.png)](https://travis-ci.org/kaimallea/isMobile)
-[![Node dependencies status](https://david-dm.org/kaimallea/isMobile.png)](https://david-dm.org/kaimallea/isMobile)
-[![](https://data.jsdelivr.com/v1/package/npm/ismobilejs/badge)](https://www.jsdelivr.com/package/npm/ismobilejs)
-
 # isMobile
 
-A simple JS library that detects mobile devices in both the browser and NodeJS.
+A simple JS library that detects mobile devices in both the browser and Deno.
 
 ## Why use isMobile?
 
@@ -17,14 +13,6 @@ My edge case at the time was redirecting users to a completely separate mobile s
 #### How it works in the browser
 
 isMobile runs quickly during initial page load to detect mobile devices; it then creates a JavaScript object with the results.
-
-### In NodeJS
-
-You might want to use this library to do server-side device detection to minimize the amount of bytes you send back to visitors. Or you have your own arbitrary use case.
-
-#### How is works in NodeJS
-
-You import and call the `isMobile` function, passing it a user agent string; it then returns a JavaScript object with the results.
 
 ## Devices detected by isMobile
 
@@ -73,24 +61,8 @@ In a browser, the following properties of the global `isMobile` object will eith
 
 ## Usage
 
-### Node.js
-
-#### Install
-
-```bash
-yarn add ismobilejs
-```
-
-or
-
-```bash
-npm install ismobilejs
-```
-
-#### Use
-
 ```ts
-import isMobile from 'ismobilejs';
+import isMobile from "https://code4fukui.github.io/isMobile/isMobile.js";
 const userAgent = req.headers['user-agent'];
 console.log(isMobile(userAgent).any);
 ```
@@ -107,78 +79,6 @@ window.navigator = {
   ..
 }
 ```
-
-```ts
-import isMobile from 'ismobilejs';
-console.log(isMobile(window.navigator).apple.tablet);
-```
-
-### Browser
-
-A real-word example: I include the minified version of the script, inline, and at the top of the `<head>`. Cellular connections tend to suck, so it would be wasteful overhead to open another connection, just to download ~1.3kb of JS:
-
-<!-- prettier-ignore -->
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <script>
-      // Minified version of isMobile included in the HTML since it's small
-      (function () {var a={};var f=/iPhone/i,h=/iPod/i,i=/iPad/i,r=/\biOS-universal(?:.+)Mac\b/i,g=/\bAndroid(?:.+)Mobile\b/i,j=/Android/i,c=/(?:SD4930UR|\bSilk(?:.+)Mobile\b)/i,d=/Silk/i,b=/Windows Phone/i,k=/\bWindows(?:.+)ARM\b/i,m=/BlackBerry/i,n=/BB10/i,o=/Opera Mini/i,p=/\b(CriOS|Chrome)(?:.+)Mobile/i,q=/Mobile(?:.+)Firefox\b/i;function s(l){return function($){return $.test(l)}}function e(l){var $=(l=l||("undefined"!=typeof navigator?navigator.userAgent:"")).split("[FBAN");void 0!==$[1]&&(l=$[0]),void 0!==($=l.split("Twitter"))[1]&&(l=$[0]);var a=s(l),e={apple:{phone:a(f)&&!a(b),ipod:a(h),tablet:!a(f)&&a(i)&&!a(b),universal:a(r),device:(a(f)||a(h)||a(i))&&!a(b)},amazon:{phone:a(c),tablet:!a(c)&&a(d),device:a(c)||a(d)},android:{phone:!a(b)&&a(c)||!a(b)&&a(g),tablet:!a(b)&&!a(c)&&!a(g)&&(a(d)||a(j)),device:!a(b)&&(a(c)||a(d)||a(g)||a(j))||a(/\bokhttp\b/i)},windows:{phone:a(b),tablet:a(k),device:a(b)||a(k)},other:{blackberry:a(m),blackberry10:a(n),opera:a(o),firefox:a(q),chrome:a(p),device:a(m)||a(n)||a(o)||a(q)||a(p)},any:!1,phone:!1,tablet:!1};return e.any=e.apple.universal||e.apple.device||e.android.device||e.windows.device||e.other.device,e.phone=e.apple.phone||e.android.phone||e.windows.phone,e.tablet=e.apple.tablet||e.android.tablet||e.windows.tablet,e}a=e();if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=a}else if(typeof define==="function"&&define.amd){define(function(){return a})}else{this["isMobile"]=a}})();
-
-      // My own arbitrary use of isMobile, as an example
-      (function() {
-        var MOBILE_SITE = '/mobile/index.html', // site to redirect to
-          NO_REDIRECT = 'noredirect'; // cookie to prevent redirect
-
-        // I only want to redirect iPhones, Android phones
-        if (isMobile.apple.phone || isMobile.android.phone) {
-          // Only redirect if the user didn't previously choose
-          // to explicitly view the full site. This is validated
-          // by checking if a "noredirect" cookie exists
-          if (document.cookie.indexOf(NO_REDIRECT) === -1) {
-            document.location = MOBILE_SITE;
-          }
-        }
-      })();
-    </script>
-  </head>
-  <body>
-    <!-- imagine lots of html and content -->
-  </body>
-</html>
-```
-
-### jsDelivr CDN [![](https://data.jsdelivr.com/v1/package/npm/ismobilejs/badge)](https://www.jsdelivr.com/package/npm/ismobilejs)
-
-Alternatively, you can include this library via [jsDelivr CDN](https://www.jsdelivr.com/package/npm/ismobilejs) in a `script` tag:
-
-`<script src="https://cdn.jsdelivr.net/npm/ismobilejs@1/dist/isMobile.min.js"></script>`
-
-**Visit the isMobile [jsDelivr page](https://www.jsdelivr.com/package/npm/ismobilejs) to get the most up-to-date URL pointing to the lastest version.**
-
-## Building manually
-
-After checking out the repo, install dependencies:
-
-```bash
-yarn install
-```
-
-Then build the library:
-
-```bash
-yarn build
-```
-
-Three versions of the library will be generated:
-
-1. `./cjs/index.js` - the CommonJS version of the library
-2. `./esm/index.js` - the ESModule version of the library
-3. `./dist/isMobile.min.js` - the browser version of the library
-
-Additionally, types will be output to `types`.
 
 ## Contributing
 
