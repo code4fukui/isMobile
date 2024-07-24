@@ -63,8 +63,8 @@ In a browser, the following properties of the global `isMobile` object will eith
 
 ```ts
 import isMobile from "https://code4fukui.github.io/isMobile/isMobile.js";
-const userAgent = req.headers['user-agent'];
-console.log(isMobile(userAgent).any);
+
+console.log(isMobile(window.navigator).any);
 ```
 
 Or pass in a `window.navigator`-shaped object that includes at least a `userAgent` property. To properly detect iPad on iOS 13, the object should also include the `platform` and `maxTouchPoints` properties.
