@@ -14,14 +14,7 @@ const otherOpera = /Opera Mini/i;
 const otherChrome = /\b(CriOS|Chrome)(?:.+)Mobile/i;
 const otherFirefox = /Mobile(?:.+)Firefox\b/i; // Match 'Mobile' AND 'Firefox'
 
-export type UserAgent = string;
-export type Navigator = {
-  userAgent: string;
-  platform: string;
-  maxTouchPoints?: number;
-};
-
-const isAppleTabletOnIos13 = (navigator?: Navigator): boolean => {
+const isAppleTabletOnIos13 = (navigator) => {
   return (
     typeof navigator !== 'undefined' &&
     navigator.platform === 'MacIntel' &&
@@ -31,50 +24,12 @@ const isAppleTabletOnIos13 = (navigator?: Navigator): boolean => {
   );
 };
 
-function createMatch(userAgent: UserAgent): (regex: RegExp) => boolean {
-  return (regex: RegExp): boolean => regex.test(userAgent);
+function createMatch(userAgent) {
+  return (regex) => regex.test(userAgent);
 }
 
-export type isMobileResult = {
-  apple: {
-    phone: boolean;
-    ipod: boolean;
-    tablet: boolean;
-    universal: boolean;
-    device: boolean;
-  };
-  amazon: {
-    phone: boolean;
-    tablet: boolean;
-    device: boolean;
-  };
-  android: {
-    phone: boolean;
-    tablet: boolean;
-    device: boolean;
-  };
-  windows: {
-    phone: boolean;
-    tablet: boolean;
-    device: boolean;
-  };
-  other: {
-    blackberry: boolean;
-    blackberry10: boolean;
-    opera: boolean;
-    firefox: boolean;
-    chrome: boolean;
-    device: boolean;
-  };
-  phone: boolean;
-  tablet: boolean;
-  any: boolean;
-};
-
-export type IsMobileParameter = UserAgent | Navigator;
-
-export default function isMobile(param?: IsMobileParameter): isMobileResult {
-  let nav: Navigator = {
+export default function isMobile(param = globalThis.navigator) {
+  let nav = {
     userAgent: '',
     platform: '',
     maxTouchPoints: 0,
@@ -115,7 +70,7 @@ export default function isMobile(param?: IsMobileParameter): isMobileResult {
 
   const match = createMatch(userAgent);
 
-  const result: isMobileResult = {
+  const result = {
     apple: {
       phone: match(appleIphone) && !match(windowsPhone),
       ipod: match(appleIpod),
